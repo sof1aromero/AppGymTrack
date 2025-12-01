@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'registro_paso2.dart';
 
 class RegistroPaso1 extends StatefulWidget {
@@ -10,6 +11,11 @@ class RegistroPaso1 extends StatefulWidget {
 
 class _RegistroPaso1State extends State<RegistroPaso1> {
   String? tipoDocumento;
+
+  // Controladores de campos obligatorios
+  final TextEditingController primerNombreCtrl = TextEditingController();
+  final TextEditingController primerApellidoCtrl = TextEditingController();
+  final TextEditingController numeroDocumentoCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,6 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
 
               const SizedBox(height: 20),
 
-              // Tarjeta blanca
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -68,15 +73,15 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
 
                       const SizedBox(height: 20),
 
-                      campo("Primer nombre*", false),
+                      // CAMPOS OBLIGATORIOS CON CONTROLADORES
+                      campoObligatorio("Primer nombre*", primerNombreCtrl),
                       campo("Segundo nombre (opcional)", false),
-                      campo("Primer apellido*", false),
+                      campoObligatorio("Primer apellido*", primerApellidoCtrl),
                       campo("Segundo apellido (opcional)", false),
 
                       const SizedBox(height: 10),
                       const Text("Tipo de documento*",
                           style: TextStyle(fontWeight: FontWeight.bold)),
-
                       const SizedBox(height: 5),
 
                       Container(
@@ -98,6 +103,10 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
                                 value: "TI",
                                 child: Text("Tarjeta de Identidad"),
                               ),
+                              DropdownMenuItem(
+                                value: "PPT",
+                                child: Text("Permiso por Protección Temportal"),
+                              ),
                             ],
                             onChanged: (value) {
                               setState(() {
@@ -109,11 +118,13 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
                       ),
 
                       const SizedBox(height: 15),
-                      campo("Número de documento*", true),
+
+                      campoObligatorio("Número de documento*", numeroDocumentoCtrl,
+                          numeric: true),
 
                       const SizedBox(height: 25),
 
-                      // Botón siguiente
+   
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF00C2A7),
@@ -122,13 +133,7 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
                             borderRadius: BorderRadius.circular(30),
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const RegistroPaso2()),
-                          );
-                        },
+                        onPressed: validarYContinuar,
                         child: const Text(
                           "Siguiente",
                           style: TextStyle(color: Colors.white, fontSize: 18),
@@ -142,6 +147,55 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
           ),
         ),
       ),
+    );
+  }
+
+
+  void validarYContinuar() {
+    if (primerNombreCtrl.text.isEmpty ||
+        primerApellidoCtrl.text.isEmpty ||
+        numeroDocumentoCtrl.text.isEmpty ||
+        tipoDocumento == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Por favor complete todos los campos obligatorios."),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+// si llena todo pasa a registro 2
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const RegistroPaso2()),
+    );
+  }
+
+
+
+  Widget campoObligatorio(String label, TextEditingController controller,
+      {bool numeric = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 5),
+        TextField(
+          controller: controller,
+          keyboardType: numeric ? TextInputType.number : TextInputType.text,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFFE3E3E3),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+        const SizedBox(height: 15),
+      ],
     );
   }
 

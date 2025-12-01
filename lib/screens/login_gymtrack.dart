@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'recuperar_contrasena_paso1.dart';
 import 'registro_paso1.dart';
 
 class LoginGymTrack extends StatefulWidget {
@@ -10,13 +12,14 @@ class LoginGymTrack extends StatefulWidget {
 
 class _LoginGymTrackState extends State<LoginGymTrack> {
   String? selectedDocumentType;
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Fondo de pantalla
+          // Fondo
           SizedBox.expand(
             child: Image.asset(
               "assets/images/gym_bg.png",
@@ -38,7 +41,7 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
                   children: [
                     const SizedBox(height: 50),
 
-                    // LOGO
+                    // Logo
                     const Icon(Icons.fitness_center, size: 90, color: Colors.white),
                     const SizedBox(height: 10),
                     const Text(
@@ -54,7 +57,7 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
 
                     const SizedBox(height: 40),
 
-                    // Selección tipo de documento
+                    // Tipo de documento
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
@@ -68,9 +71,9 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
                           labelText: "Tipo de Documento",
                         ),
                         items: [
-                          "Cédula",
+                          "Cédula de Ciudadanía",
                           "Tarjeta de Identidad",
-                          "Pasaporte",
+                          "Permiso por Protección Temporal",
                         ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                         onChanged: (value) {
                           setState(() {
@@ -82,33 +85,63 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
 
                     const SizedBox(height: 15),
 
+                    // Número de documento
                     _inputField("N° Documento"),
 
                     const SizedBox(height: 15),
 
+                    // Contraseña
                     _inputField("Contraseña", isPassword: true),
 
                     const SizedBox(height: 10),
 
+                    // Recordarme
                     Row(
                       children: [
                         Checkbox(
-                          value: true,
-                          onChanged: (value) {},
+                          value: rememberMe,
+                          onChanged: (value) {
+                            setState(() {
+                              rememberMe = value ?? false;
+                            });
+                          },
                           activeColor: Colors.tealAccent,
                         ),
                         const Text("Recordarme", style: TextStyle(color: Colors.white)),
                       ],
                     ),
 
+                    // Olvidé contraseña
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const RecuperarContrasenaPaso1(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Olvidé mi contraseña",
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 10),
 
-                    // botón iniciar sesión
+                    // Botón iniciar sesión
                     _button("Inicia Sesión"),
 
                     const SizedBox(height: 10),
 
-                    // botón no tengo cuenta → REGISTRO
+                    // Botón registro
                     _button(
                       "No Tengo Cuenta",
                       color: Colors.cyanAccent,
@@ -131,7 +164,9 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
     );
   }
 
-  // -------- Widgets reutilizables ----------
+  // ----------------------
+  // WIDGETS REUTILIZABLES
+  // ----------------------
 
   Widget _inputField(String label, {bool isPassword = false}) {
     return Container(
@@ -150,7 +185,8 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
     );
   }
 
-  Widget _button(String text, {Color color = Colors.tealAccent, VoidCallback? onPressed}) {
+  Widget _button(String text,
+      {Color color = Colors.tealAccent, VoidCallback? onPressed}) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(

@@ -9,7 +9,8 @@ class RegistroPaso2 extends StatefulWidget {
 
 class _RegistroPaso2State extends State<RegistroPaso2> {
 
-  DateTime? fechaNacimiento; // ← VARIABLE PARA GUARDAR LA FECHA
+  bool recordar = false; 
+  DateTime? fechaNacimiento;
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +72,31 @@ class _RegistroPaso2State extends State<RegistroPaso2> {
                       campo("Correo electrónico*", false),
                       campo("Dirección*", false),
 
-                      // ← ← AQUI SE AGREGA LA FECHA
+
                       fechaNacimientoCampo(),
 
                       campo("Contraseña*", false, isPassword: true),
                       campo("Confirmar contraseña*", false, isPassword: true),
+
+                      const SizedBox(height: 10),
+
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: recordar,
+                            onChanged: (value) {
+                              setState(() {
+                                recordar = value ?? false;
+                              });
+                            },
+                            activeColor: Colors.tealAccent,
+                          ),
+                          const Text(
+                            "Recordarme",
+                            style: TextStyle(color: Colors.black87),
+                          ),
+                        ],
+                      ),
 
                       const SizedBox(height: 30),
 
@@ -104,7 +125,7 @@ class _RegistroPaso2State extends State<RegistroPaso2> {
     );
   }
 
-  // ---------------------- CAMPOS NORMALES ----------------------
+
 
   Widget campo(String label, bool numeric, {bool isPassword = false}) {
     return Column(
@@ -130,7 +151,6 @@ class _RegistroPaso2State extends State<RegistroPaso2> {
     );
   }
 
-  // ---------------------- CAMPO FECHA NACIMIENTO ----------------------
 
   Widget fechaNacimientoCampo() {
     return Column(
@@ -150,7 +170,7 @@ class _RegistroPaso2State extends State<RegistroPaso2> {
 
             if (picked != null) {
               setState(() {
-                fechaNacimiento = picked;
+                fechaNacimiento  = picked;
               });
             }
           },
