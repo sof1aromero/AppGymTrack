@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymtrack/screens/optionsapp/MenuPrincipal.dart';
 
 import 'recuperar_contrasena_paso1.dart';
 import 'registro_paso1.dart';
@@ -137,7 +138,15 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
                     const SizedBox(height: 10),
 
                     // Botón iniciar sesión
-                    _button("Inicia Sesión"),
+                    _button(
+                      "Inicia Sesión",
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context, 
+                          MaterialPageRoute(builder: (context) => const MenuPrincipal()),
+                        );
+                      },
+                      ),
 
                     const SizedBox(height: 10),
 
