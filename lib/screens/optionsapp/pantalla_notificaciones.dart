@@ -139,7 +139,7 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFE3E6EE), Color(0xFFA6DFDE)],
+            colors: [Color(0xFFE3E6EE), Color(0xFF34B5A0)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -150,16 +150,16 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Título
                 const Center(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 25, bottom: 20),
+                    padding: EdgeInsets.only(top: 15, bottom: 40),
                     child: Text(
                       "Notificaciones",
                       style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF2C3E50)),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF2C3E50),
+                      ),
                     ),
                   ),
                 ),

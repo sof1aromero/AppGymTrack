@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../screenspagos/pantalla_servicios_pendientes.dart'; 
+import '../screenspagos/historial_clases.dart';
+import '../screenspagos/historial_pagos.dart';
+import '../screenspagos/pantalla_servicios_pendientes.dart';
 
 class PantallaPagos extends StatelessWidget {
   const PantallaPagos({super.key});
@@ -11,7 +13,7 @@ class PantallaPagos extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFFE3E6EE), Color(0xFFA6DFDE)],
+            colors: [Color(0xFFE3E6EE), Color(0xFF34B5A0)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -22,21 +24,21 @@ class PantallaPagos extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // --- TÍTULO ---
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.only(top: 15, bottom: 40),
                     child: Text(
                       "Mis pagos",
                       style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF2C3E50)),
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xFF2C3E50),
+                      ),
                     ),
                   ),
                 ),
 
-                // --- 1. Realizar pago (Con acción de navegación) ---
+                // --- REALIZAR PAGO ---
                 _buildPaymentCard(
                   context: context,
                   title: "Realizar pago",
@@ -44,36 +46,50 @@ class PantallaPagos extends StatelessWidget {
                       "Consultar los servicios pendientes y realiza el pago fácilmente.",
                   buttonText: "Ir a pagar",
                   onTap: () {
-                    // Acción de navegación
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const PantallaServiciosPendientes(),
+                        builder: (context) => PantallaServiciosPendientes(
+                          serviceName: "Membresía General",
+                          price: "\$100.000",
+                        ),
                       ),
                     );
                   },
                 ),
                 const SizedBox(height: 25),
 
-                // --- 2. Ver historial de pagos ---
+                // --- HISTORIAL DE PAGOS ---
                 _buildPaymentCard(
                   context: context,
-                  title: "Ver historial",
-                  description:
-                      "Consulta tus pagos anteriores por fecha o servicio.",
+                  title: "Ver historial de pagos",
+                  description: "Consulta tus pagos anteriores por fecha o servicio.",
                   buttonText: "Ver historial",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HistorialPagosScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 25),
 
-                // --- 3. Ver historial de clases ---
+                // --- HISTORIAL DE CLASES ---
                 _buildPaymentCard(
                   context: context,
-                  title: "Ver historial",
-                  description:
-                      "Mira las clases que ya tomaste o cancelaste.",
+                  title: "Ver historial de clases",
+                  description: "Mira las clases que ya tomaste o cancelaste.",
                   buttonText: "Ver historial",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HistorialClasesScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -83,7 +99,7 @@ class PantallaPagos extends StatelessWidget {
     );
   }
 
-  // --- Widget para las Tarjetas de Acción ---
+  // --- CARD REUTILIZABLE ---
   Widget _buildPaymentCard({
     required BuildContext context,
     required String title,
@@ -91,7 +107,7 @@ class PantallaPagos extends StatelessWidget {
     required String buttonText,
     required VoidCallback onTap,
   }) {
-    const Color primaryColor = Color(0xFFA6DFDE);
+    const Color primaryColor = Color(0xFF34B5A0);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -120,6 +136,7 @@ class PantallaPagos extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+
           Text(
             description,
             style: const TextStyle(
@@ -129,6 +146,7 @@ class PantallaPagos extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 15),
+
           GestureDetector(
             onTap: onTap,
             child: Container(
@@ -143,7 +161,7 @@ class PantallaPagos extends StatelessWidget {
               ),
               child: Text(
                 buttonText,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: primaryColor,
