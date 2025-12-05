@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-// --- Modelo de Datos para una Notificación ---
+
 class Notificacion {
-  final String estado; // 'Leída' o 'No leída'
+  final String estado; 
   final String titulo;
   final String descripcion;
-  // El campo 'tiempo' es estático (texto) y se usará directamente.
   final String tiempo; 
-  final DateTime fecha; // Se mantiene SÓLO para la lógica de filtrado
+  final DateTime fecha; 
 
   Notificacion({
     required this.estado,
@@ -28,79 +27,78 @@ class PantallaNotificaciones extends StatefulWidget {
 class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
   String _filtroSeleccionado = "Hoy";
   final List<String> _opcionesFiltro = [
-    "Todas", // Opción 'Todas' añadida
+    "Todas", 
     "Hoy",
     "Esta semana",
     "Este mes",
     "Este año"
   ];
 
-  // --- Datos de Notificaciones de Ejemplo (con fechas reales para filtrar) ---
+
   late final List<Notificacion> _todasLasNotificaciones;
 
   @override
   void initState() {
     super.initState();
-    // Inicialización de las notificaciones con fechas relativas a hoy.
+ 
     final now = DateTime.now();
     _todasLasNotificaciones = [
       Notificacion(
         estado: "No leída",
         titulo: "Tu pago se aproxima",
         descripcion: "El cobro de Spinning está programado para mañana.",
-        tiempo: "Hace 3 horas", // Texto estático conservado
-        fecha: now.subtract(const Duration(hours: 3)), // Filtrado: Hoy
+        tiempo: "Hace 3 horas", 
+        fecha: now.subtract(const Duration(hours: 3)), 
       ),
       Notificacion(
         estado: "Leída",
         titulo: "Clase cancelada",
         descripcion: "La clase de Boxeo con Juan Pérez ha sido cancelada.",
-        tiempo: "Hace 5 horas", // Texto estático conservado
-        fecha: now.subtract(const Duration(hours: 5)), // Filtrado: Hoy
+        tiempo: "Hace 5 horas", 
+        fecha: now.subtract(const Duration(hours: 5)), 
       ),
       Notificacion(
         estado: "Leída",
         titulo: "Recordatorio de clase",
         descripcion: "Tu clase de Yoga Suave comienza en 30 minutos.",
-        tiempo: "Hace 1 día", // Texto estático conservado
-        fecha: now.subtract(const Duration(days: 1, minutes: 1)), // Filtrado: Ayer (fuera de "Hoy")
+        tiempo: "Hace 1 día", 
+        fecha: now.subtract(const Duration(days: 1, minutes: 1)), 
       ),
       Notificacion(
         estado: "No leída",
         titulo: "Pago vencido",
         descripcion: "Tu pago de membresía por \$150.000 venció ayer.",
-        tiempo: "Hace 1 día", // Texto estático conservado
-        fecha: now.subtract(const Duration(days: 1, hours: 1)), // Filtrado: Ayer (fuera de "Hoy")
+        tiempo: "Hace 1 día",
+        fecha: now.subtract(const Duration(days: 1, hours: 1)), 
       ),
       Notificacion(
         estado: "Leída",
         titulo: "Nueva oferta",
         descripcion: "¡Tenemos un 20% de descuento en masajes deportivos!",
-        tiempo: "Hace 2 semanas", // Texto estático conservado
-        fecha: now.subtract(const Duration(days: 14)), // Filtrado: Esta semana
+        tiempo: "Hace 2 semanas", 
+        fecha: now.subtract(const Duration(days: 14)), 
       ),
       Notificacion(
         estado: "No leída",
         titulo: "Actualización de horarios",
         descripcion: "Los horarios de la piscina han sido modificados.",
-        tiempo: "Hace 3 meses", // Texto estático conservado
-        fecha: now.subtract(const Duration(days: 90)), // Filtrado: Este mes
+        tiempo: "Hace 3 meses",
+        fecha: now.subtract(const Duration(days: 90)), 
       ),
     ];
   }
 
-  // --- Lógica de Filtrado ---
+  
   List<Notificacion> _obtenerNotificacionesFiltradas() {
-    // 1. Manejar la opción 'Todas' primero.
+    
     if (_filtroSeleccionado == "Todas") {
-      // Retorna la lista completa ordenada por fecha (más reciente primero)
       return _todasLasNotificaciones
           .toList()
           .cast<Notificacion>()
           ..sort((a, b) => b.fecha.compareTo(a.fecha));
     }
 
-    // 2. Aplicar el resto de filtros.
+
     final now = DateTime.now();
 
     final listaFiltrada = _todasLasNotificaciones.where((notificacion) {
@@ -112,7 +110,7 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
               notiDate.month == now.month &&
               notiDate.day == now.day;
         case "Esta semana":
-          // Define el inicio de la semana (Lunes)
+         
           final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
           return notiDate.isAfter(startOfWeek.subtract(const Duration(seconds: 1)));
         case "Este mes":
@@ -125,7 +123,7 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
       }
     }).toList();
 
-    // Ordenar los resultados filtrados por fecha (más reciente primero)
+
     listaFiltrada.sort((a, b) => b.fecha.compareTo(a.fecha));
 
     return listaFiltrada;
@@ -164,12 +162,10 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
                   ),
                 ),
 
-                // Dropdown (Filtro)
                 _buildFiltroDropdown(),
 
                 const SizedBox(height: 20),
 
-                // Lista de Notificaciones
                 Expanded(
                   child: notificacionesFiltradas.isEmpty
                       ? Center(
@@ -195,7 +191,6 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
     );
   }
 
-  // --- Widget para el Dropdown ---
   Widget _buildFiltroDropdown() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -230,7 +225,6 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
     );
   }
 
-  // --- Widget para cada Ítem de Notificación ---
   Widget _buildNotiItem(Notificacion noti) {
     final bool esNoLeida = noti.estado == "No leída";
 
@@ -258,7 +252,6 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Icono de estado (punto de color)
           Padding(
             padding: const EdgeInsets.only(right: 10, top: 5),
             child: Icon(
@@ -271,7 +264,6 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Título y Estado
                 Text(
                   noti.titulo,
                   style: TextStyle(
@@ -282,16 +274,14 @@ class _PantallaNotificacionesState extends State<PantallaNotificaciones> {
                 ),
                 const SizedBox(height: 5),
 
-                // Descripción
                 Text(
                   noti.descripcion,
                   style: const TextStyle(fontSize: 14, color: Colors.black87),
                 ),
                 const SizedBox(height: 8),
 
-                // Tiempo (Texto estático original)
                 Text(
-                  "${noti.estado}  •  ${noti.tiempo}", // Se usa el texto 'tiempo' original
+                  "${noti.estado}  •  ${noti.tiempo}", 
                   style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 12,

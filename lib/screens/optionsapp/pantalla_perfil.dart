@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../optionsapp/pantalla_mas.dart';
 import '../perfilupdate/pantalla_actualizar_datos.dart';
-import '../perfilupdate/pantalla_cambiar_contraseña.dart';
+import '../perfilupdate/pantalla_cambiar_contraseña.dart'; 
 
 class PantallaPerfil extends StatelessWidget {
   const PantallaPerfil({super.key});
@@ -86,7 +86,6 @@ class PantallaPerfil extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 15),
-
               _itemPerfil(
                 context,
                 text: "Actualizar datos personales",

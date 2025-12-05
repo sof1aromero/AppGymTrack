@@ -38,7 +38,6 @@ class PantallaPagos extends StatelessWidget {
                   ),
                 ),
 
-                // --- REALIZAR PAGO ---
                 _buildPaymentCard(
                   context: context,
                   title: "Realizar pago",
@@ -59,7 +58,6 @@ class PantallaPagos extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
 
-                // --- HISTORIAL DE PAGOS ---
                 _buildPaymentCard(
                   context: context,
                   title: "Ver historial de pagos",
@@ -76,7 +74,6 @@ class PantallaPagos extends StatelessWidget {
                 ),
                 const SizedBox(height: 25),
 
-                // --- HISTORIAL DE CLASES ---
                 _buildPaymentCard(
                   context: context,
                   title: "Ver historial de clases",
@@ -99,7 +96,6 @@ class PantallaPagos extends StatelessWidget {
     );
   }
 
-  // --- CARD REUTILIZABLE ---
   Widget _buildPaymentCard({
     required BuildContext context,
     required String title,

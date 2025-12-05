@@ -5,7 +5,7 @@ import '../screenspagos/pantalla_servicios_pendientes.dart';
 class PantallaServicios extends StatelessWidget {
   const PantallaServicios({super.key});
 
-  final Color _primaryColor = const Color(0xFF34B5A0); // Aguamarina
+  final Color _primaryColor = const Color(0xFF34B5A0); 
   final Color _darkTextColor = const Color(0xFF2C3E50);
 
   @override
@@ -122,7 +122,6 @@ class PantallaServicios extends StatelessWidget {
     );
   }
 
-  // ---------- CARD DE SERVICIO ----------
   Widget _buildServiceCard(
     BuildContext context, {
     required String title,
@@ -191,7 +190,6 @@ class PantallaServicios extends StatelessWidget {
     );
   }
 
-  // ---------- BOTONES ----------
   Widget _buildActionButton(String text, VoidCallback onTap,
       {bool isPrimary = false}) {
     return Expanded(
@@ -292,7 +290,6 @@ class PantallaServicios extends StatelessWidget {
     );
   }
 
-  // ---------- POPUP CANCELACIÓN (MODIFICADO) ----------
   void _showCancelPopup(BuildContext context, String serviceName) {
     showDialog(
       context: context,
@@ -324,7 +321,6 @@ class PantallaServicios extends StatelessWidget {
               ),
               const SizedBox(height: 30),
 
-              // ---------- BOTÓN NEGRO ----------
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'pantalla_perfil.dart'; // Asegúrate de que este archivo exista
+import 'pantalla_perfil.dart'; 
 
 class PantallaMas extends StatelessWidget {
   const PantallaMas({super.key});
@@ -11,13 +11,12 @@ class PantallaMas extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            // Colores originales conservados
             colors: [Color(0xFFE3E6EE), Color(0xFF34B5A0)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea( // Añadido SafeArea
+        child: SafeArea( 
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
             child: Column(
@@ -37,19 +36,17 @@ class PantallaMas extends StatelessWidget {
                   ),
                 ),
 
-                // --- Tarjeta de Perfil ---
                 _buildProfileCard(context),
 
                 const SizedBox(height: 30),
 
-                // --- SECCIONES PRINCIPALES ---
                 _buildSectionTitle("General"),
                 _item(
                   context: context,
                   text: "Mis servicios",
                   icon: Icons.fitness_center_outlined,
                   onTap: () {
-                    // Acción para Mis servicios
+
                     print("Navegar a Mis Servicios");
                   },
                 ),
@@ -58,7 +55,7 @@ class PantallaMas extends StatelessWidget {
                   text: "Clases",
                   icon: Icons.calendar_month_outlined,
                   onTap: () {
-                    // Acción para Clases
+
                     print("Navegar a Clases");
                   },
                 ),
@@ -67,7 +64,7 @@ class PantallaMas extends StatelessWidget {
                   text: "Mis pagos",
                   icon: Icons.credit_card_outlined,
                   onTap: () {
-                    // Acción para Mis pagos
+
                     print("Navegar a Mis Pagos");
                   },
                 ),
@@ -76,7 +73,7 @@ class PantallaMas extends StatelessWidget {
                   text: "Notificaciones",
                   icon: Icons.notifications_none_outlined,
                   onTap: () {
-                    // Acción para Notificaciones
+
                     print("Navegar a Notificaciones");
                   },
                 ),
@@ -84,7 +81,7 @@ class PantallaMas extends StatelessWidget {
                 const SizedBox(height: 30),
                 _buildSectionTitle("Soporte y Salir"),
 
-                // --- SOPORTE ---
+
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
@@ -95,10 +92,10 @@ class PantallaMas extends StatelessWidget {
                 
                 const SizedBox(height: 10),
 
-                // --- CERRAR SESIÓN ---
+
                 GestureDetector(
                   onTap: () {
-                    // Lógica para cerrar sesión
+          
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Cerrando sesión...')),
                     );
@@ -141,7 +138,6 @@ class PantallaMas extends StatelessWidget {
     );
   }
 
-  // --- Widget para el Título de Sección ---
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10, top: 5),
@@ -156,7 +152,6 @@ class PantallaMas extends StatelessWidget {
     );
   }
 
-  // --- Widget para la Tarjeta de Perfil ---
   Widget _buildProfileCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(15),
@@ -177,8 +172,8 @@ class PantallaMas extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 35,
-            backgroundColor: Color(0xFFA6DFDE), // Color del degradado para mejor look
-            child: Icon(Icons.person, size: 40, color: Color(0xFF2C3E50)), // Ícono más oscuro
+            backgroundColor: Color(0xFFA6DFDE), 
+            child: Icon(Icons.person, size: 40, color: Color(0xFF2C3E50)), 
           ),
           const SizedBox(width: 15),
           Column(
@@ -192,7 +187,7 @@ class PantallaMas extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          // Botón de Edición
+      
           IconButton(
             icon: const Icon(Icons.edit, color: Color(0xFF1ABC9C)),
             onPressed: () {
@@ -208,7 +203,6 @@ class PantallaMas extends StatelessWidget {
     );
   }
 
-  // --- Widget para el Ítem de Menú (Refactorizado) ---
   Widget _item({
     required BuildContext context,
     required String text,
@@ -222,7 +216,7 @@ class PantallaMas extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(12), // Bordes más suaves
+          borderRadius: BorderRadius.circular(12), 
           border: Border.all(color: Colors.black12),
           boxShadow: [
             BoxShadow(
@@ -235,7 +229,7 @@ class PantallaMas extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: const Color(0xFF1ABC9C)), // Icono de color verde/aguamarina
+            Icon(icon, color: const Color(0xFF1ABC9C)), 
             const SizedBox(width: 15),
             Expanded(
               child: Text(
