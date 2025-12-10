@@ -62,10 +62,7 @@ class _MenuPrincipalState extends State<MenuPrincipal> {
               icon: Icon(Icons.notifications),
               label: "Notificaciones",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu),
-              label: "Más",
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.menu), label: "Más"),
           ],
         ),
       ),

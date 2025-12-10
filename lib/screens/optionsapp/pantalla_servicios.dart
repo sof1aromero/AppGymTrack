@@ -5,7 +5,7 @@ import '../screenspagos/pantalla_servicios_pendientes.dart';
 class PantallaServicios extends StatelessWidget {
   const PantallaServicios({super.key});
 
-  final Color _primaryColor = const Color(0xFF34B5A0); 
+  final Color _primaryColor = const Color(0xFF34B5A0);
   final Color _darkTextColor = const Color(0xFF2C3E50);
 
   @override
@@ -31,18 +31,18 @@ class PantallaServicios extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             children: [
               const Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 40),
-                    child: Text(
-                      "Mis servicios",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xFF2C3E50),
-                      ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 15, bottom: 40),
+                  child: Text(
+                    "Mis servicios",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF2C3E50),
                     ),
                   ),
                 ),
+              ),
               _buildServiceCard(
                 context,
                 title: "Spinning",
@@ -52,15 +52,21 @@ class PantallaServicios extends StatelessWidget {
                     "Inicio: 2025-06-18\nPróximo pago: 2025-07-18\nPrecio: \$80.000 mensual",
                 actionButtons: [
                   _buildActionButton(
-                      "Ver detalles",
-                      () => _showDetailPopup(
-                          context, "Spinning", spinningDetails)),
-                  _buildActionButton("Cancelar",
-                      () => _showCancelPopup(context, "Spinning")),
+                    "Ver detalles",
+                    () =>
+                        _showDetailPopup(context, "Spinning", spinningDetails),
+                  ),
+                  _buildActionButton(
+                    "Cancelar",
+                    () => _showCancelPopup(context, "Spinning"),
+                  ),
                   _buildActionButton(
                     "Pagar",
                     () => _navigateToPagosPendientes(
-                        context, "Spinning", "\$80.000"),
+                      context,
+                      "Spinning",
+                      "\$80.000",
+                    ),
                     isPrimary: true,
                   ),
                 ],
@@ -75,15 +81,21 @@ class PantallaServicios extends StatelessWidget {
                     "Inicio: 2025-06-18\nVence: 2025-07-18\nPrecio: \$110.000 mensual",
                 actionButtons: [
                   _buildActionButton(
-                      "Ver detalles",
-                      () => _showDetailPopup(
-                          context, "Gym Libre", gymLibreDetails)),
-                  _buildActionButton("Cancelar",
-                      () => _showCancelPopup(context, "Gym Libre")),
+                    "Ver detalles",
+                    () =>
+                        _showDetailPopup(context, "Gym Libre", gymLibreDetails),
+                  ),
+                  _buildActionButton(
+                    "Cancelar",
+                    () => _showCancelPopup(context, "Gym Libre"),
+                  ),
                   _buildActionButton(
                     "Pagar",
                     () => _navigateToPagosPendientes(
-                        context, "Gym Libre", "\$110.000"),
+                      context,
+                      "Gym Libre",
+                      "\$110.000",
+                    ),
                     isPrimary: true,
                   ),
                 ],
@@ -94,13 +106,16 @@ class PantallaServicios extends StatelessWidget {
                 title: "Gym Pilates",
                 status: "Cancelado",
                 statusColor: Colors.red,
-                details:
-                    "Cancelado por el cliente\nPrecio: \$90.000 mensual",
+                details: "Cancelado por el cliente\nPrecio: \$90.000 mensual",
                 actionButtons: [
                   _buildActionButton(
-                      "Ver detalles",
-                      () => _showDetailPopup(
-                          context, "Gym Pilates", gymPilatesDetails)),
+                    "Ver detalles",
+                    () => _showDetailPopup(
+                      context,
+                      "Gym Pilates",
+                      gymPilatesDetails,
+                    ),
+                  ),
                   _buildActionButton(
                     "Reactivar Servicio",
                     () => _reactivateService(context, "Gym Pilates"),
@@ -161,8 +176,10 @@ class PantallaServicios extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          Text(details,
-              style: const TextStyle(fontSize: 14, color: Colors.black87)),
+          Text(
+            details,
+            style: const TextStyle(fontSize: 14, color: Colors.black87),
+          ),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,8 +207,11 @@ class PantallaServicios extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton(String text, VoidCallback onTap,
-      {bool isPrimary = false}) {
+  Widget _buildActionButton(
+    String text,
+    VoidCallback onTap, {
+    bool isPrimary = false,
+  }) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -215,8 +235,11 @@ class PantallaServicios extends StatelessWidget {
     );
   }
 
-  Widget _buildPrimaryButton(String text, VoidCallback onTap,
-      {bool isLarge = false}) {
+  Widget _buildPrimaryButton(
+    String text,
+    VoidCallback onTap, {
+    bool isLarge = false,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -240,20 +263,27 @@ class PantallaServicios extends StatelessWidget {
         child: Text(
           text,
           style: const TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
 
   void _showDetailPopup(
-      BuildContext context, String serviceName, String serviceDescription) {
+    BuildContext context,
+    String serviceName,
+    String serviceDescription,
+  ) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           contentPadding: const EdgeInsets.all(0),
           content: Container(
             width: 300,
@@ -269,14 +299,16 @@ class PantallaServicios extends StatelessWidget {
                 Text(
                   "Detalle del servicio → $serviceName",
                   style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: _darkTextColor),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: _darkTextColor,
+                  ),
                 ),
                 const Divider(height: 25),
-                Text(serviceDescription,
-                    style:
-                        const TextStyle(fontSize: 14, color: Colors.black87)),
+                Text(
+                  serviceDescription,
+                  style: const TextStyle(fontSize: 14, color: Colors.black87),
+                ),
                 const SizedBox(height: 20),
                 _buildPrimaryButton(
                   "Volver a mis servicios",
@@ -295,14 +327,14 @@ class PantallaServicios extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           contentPadding: const EdgeInsets.all(30),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.warning_amber_rounded,
-                  color: Colors.black, size: 48),
+              Icon(Icons.warning_amber_rounded, color: Colors.black, size: 48),
               const SizedBox(height: 20),
               Text(
                 "¿Desea cancelar su servicio de $serviceName?",
@@ -324,21 +356,27 @@ class PantallaServicios extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  label: const Text("Confirmar cancelación",
-                      style: TextStyle(
-                        color: Colors.white, fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        )),
+                  label: const Text(
+                    "Confirmar cancelación",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _showSnackbar(context,
-                        "Cancelación confirmada para $serviceName");
+                    _showSnackbar(
+                      context,
+                      "Cancelación confirmada para $serviceName",
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black, // NEGRO
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
@@ -354,17 +392,17 @@ class PantallaServicios extends StatelessWidget {
                     backgroundColor: const Color(0xFF34B5A0),
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                   child: Text(
                     "Mantener servicio",
                     style: TextStyle(
-                      color: Colors.white, 
+                      color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  
                 ),
               ),
             ],
@@ -374,27 +412,30 @@ class PantallaServicios extends StatelessWidget {
     );
   }
 
-
   void _navigateToPagosPendientes(
-      BuildContext context, String serviceName, String price) {
+    BuildContext context,
+    String serviceName,
+    String price,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PantallaServiciosPendientes(
-          serviceName: serviceName,
-          price: price,
-        ),
+        builder: (context) =>
+            PantallaServiciosPendientes(serviceName: serviceName, price: price),
       ),
     );
   }
 
   void _reactivateService(BuildContext context, String serviceName) {
     _showSnackbar(
-        context, "Solicitud de Reactivación enviada para $serviceName");
+      context,
+      "Solicitud de Reactivación enviada para $serviceName",
+    );
   }
 
   void _showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text("Acción: $message")));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text("Acción: $message")));
   }
 }

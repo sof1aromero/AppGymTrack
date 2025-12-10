@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'pantalla_perfil.dart'; 
+import 'pantalla_perfil.dart';
+
+import '../optionsapp/pantalla_servicios.dart';
+import '../optionsapp/pantalla_pagos.dart';
+import '../optionsapp/pantalla_notificaciones.dart';
 
 class PantallaMas extends StatelessWidget {
   const PantallaMas({super.key});
@@ -16,7 +20,7 @@ class PantallaMas extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: SafeArea( 
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
             child: Column(
@@ -46,8 +50,12 @@ class PantallaMas extends StatelessWidget {
                   text: "Mis servicios",
                   icon: Icons.fitness_center_outlined,
                   onTap: () {
-
-                    print("Navegar a Mis Servicios");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PantallaServicios(),
+                      ),
+                    );
                   },
                 ),
                 _item(
@@ -55,7 +63,6 @@ class PantallaMas extends StatelessWidget {
                   text: "Clases",
                   icon: Icons.calendar_month_outlined,
                   onTap: () {
-
                     print("Navegar a Clases");
                   },
                 ),
@@ -64,7 +71,6 @@ class PantallaMas extends StatelessWidget {
                   text: "Mis pagos",
                   icon: Icons.credit_card_outlined,
                   onTap: () {
-
                     print("Navegar a Mis Pagos");
                   },
                 ),
@@ -73,7 +79,6 @@ class PantallaMas extends StatelessWidget {
                   text: "Notificaciones",
                   icon: Icons.notifications_none_outlined,
                   onTap: () {
-
                     print("Navegar a Notificaciones");
                   },
                 ),
@@ -81,31 +86,37 @@ class PantallaMas extends StatelessWidget {
                 const SizedBox(height: 30),
                 _buildSectionTitle("Soporte y Salir"),
 
-
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
                     "¿Tienes algún incidente?, repórtalo\ndesde la página web.",
-                    style: TextStyle(fontSize: 14, color: Colors.black87.withOpacity(0.7)),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black87.withOpacity(0.7),
+                    ),
                   ),
                 ),
-                
-                const SizedBox(height: 10),
 
+                const SizedBox(height: 10),
 
                 GestureDetector(
                   onTap: () {
-          
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Cerrando sesión...')),
                     );
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                      horizontal: 15,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.9),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.red.shade100, width: 1.5),
+                      border: Border.all(
+                        color: Colors.red.shade100,
+                        width: 1.5,
+                      ),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.red.withOpacity(0.1),
@@ -121,9 +132,10 @@ class PantallaMas extends StatelessWidget {
                         Text(
                           "Cerrar sesión",
                           style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.red,
-                              fontWeight: FontWeight.w600),
+                            fontSize: 16,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
@@ -172,29 +184,32 @@ class PantallaMas extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 35,
-            backgroundColor: Color(0xFFA6DFDE), 
-            child: Icon(Icons.person, size: 40, color: Color(0xFF2C3E50)), 
+            backgroundColor: Color(0xFFA6DFDE),
+            child: Icon(Icons.person, size: 40, color: Color(0xFF2C3E50)),
           ),
           const SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Text("Sofia Romero",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(
+                "Sofia Romero",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               Text("sofiaromero@gmail.com", style: TextStyle(fontSize: 14)),
-              Text("Usuario",
-                  style: TextStyle(fontSize: 14, color: Colors.black54)),
+              Text(
+                "Usuario",
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
             ],
           ),
           const Spacer(),
-      
+
           IconButton(
             icon: const Icon(Icons.edit, color: Color(0xFF1ABC9C)),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => const PantallaPerfil()),
+                MaterialPageRoute(builder: (context) => const PantallaPerfil()),
               );
             },
           ),
@@ -216,7 +231,7 @@ class PantallaMas extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.white.withOpacity(0.9),
-          borderRadius: BorderRadius.circular(12), 
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Colors.black12),
           boxShadow: [
             BoxShadow(
@@ -229,7 +244,7 @@ class PantallaMas extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Icon(icon, color: const Color(0xFF1ABC9C)), 
+            Icon(icon, color: const Color(0xFF1ABC9C)),
             const SizedBox(width: 15),
             Expanded(
               child: Text(
@@ -237,7 +252,11 @@ class PantallaMas extends StatelessWidget {
                 style: const TextStyle(fontSize: 16, color: Colors.black87),
               ),
             ),
-            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.black38),
+            const Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: Colors.black38,
+            ),
           ],
         ),
       ),
