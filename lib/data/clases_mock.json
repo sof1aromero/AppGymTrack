@@ -1,0 +1,28 @@
+[
+    {
+        "fecha_reserva": "2025-12-15",
+        "hora_reservada": "07:00",
+        "estado_reserva": "Confirmada",
+        "detalle_clase": {
+            "nombre_clase": "Spinning Extremo",
+            "instructor": "Ana Torres",
+            "duracion": "60 min",
+            "hora_inicio": "07:00",
+            "cupos_disponibles": 5,
+            "color_hex": "#FF5722" 
+        }
+    },
+    {
+        "fecha_reserva": "2025-12-16",
+        "hora_reservada": "18:30",
+        "estado_reserva": "Pendiente",
+        "detalle_clase": {
+            "nombre_clase": "Zumba Fit",
+            "instructor": "Carlos Ruiz",
+            "duracion": "45 min",
+            "hora_inicio": "18:30",
+            "cupos_disponibles": 12,
+            "color_hex": "#00BCD4"
+        }
+    }
+]

@@ -2,6 +2,28 @@ import 'package:flutter/material.dart';
 
 import '../screenspagos/pantalla_servicios_pendientes.dart';
 
+
+class PantallaServiciosDisponibles extends StatelessWidget {
+  const PantallaServiciosDisponibles({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Servicios Disponibles"),
+        backgroundColor: const Color(0xFF34B5A0),
+      ),
+      body: const Center(
+        child: Text(
+          "Aquí va el catálogo de servicios.",
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
+
 class PantallaServicios extends StatelessWidget {
   const PantallaServicios({super.key});
 
@@ -124,9 +146,10 @@ class PantallaServicios extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 40),
+              // CAMBIO AQUÍ: Llamando a la nueva función de navegación
               _buildPrimaryButton(
                 "Ver más servicios +",
-                () => _showSnackbar(context, "Navegar a Servicios Disponibles"),
+                () => _navigateToAvailableServices(context),
                 isLarge: true,
               ),
               const SizedBox(height: 20),
@@ -334,7 +357,11 @@ class PantallaServicios extends StatelessWidget {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.warning_amber_rounded, color: Colors.black, size: 48),
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.black,
+                size: 48,
+              ),
               const SizedBox(height: 20),
               Text(
                 "¿Desea cancelar su servicio de $serviceName?",
@@ -346,10 +373,10 @@ class PantallaServicios extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Text(
+              const Text(
                 "Al cancelar, perderá el acceso a este servicio inmediatamente. Esta acción es irreversible.",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14, color: Colors.black54),
+                style: TextStyle(fontSize: 14, color: Colors.black54),
               ),
               const SizedBox(height: 30),
 
@@ -395,7 +422,7 @@ class PantallaServicios extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     "Mantener servicio",
                     style: TextStyle(
                       color: Colors.white,
@@ -422,6 +449,15 @@ class PantallaServicios extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) =>
             PantallaServiciosPendientes(serviceName: serviceName, price: price),
+      ),
+    );
+  }
+
+  void _navigateToAvailableServices(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PantallaServiciosDisponibles(),
       ),
     );
   }

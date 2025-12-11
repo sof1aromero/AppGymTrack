@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gymtrack/screens/login_gymtrack.dart';
 
 import 'pantalla_perfil.dart';
 
 class PantallaMas extends StatelessWidget {
   final ValueChanged<int> onNavigateToTab;
   final VoidCallback onNavigateToClass;
-
 
   const PantallaMas({
     super.key,
@@ -50,7 +50,6 @@ class PantallaMas extends StatelessWidget {
 
                 _buildSectionTitle("General"),
 
-
                 _item(
                   context: context,
                   text: "Mis servicios",
@@ -67,7 +66,6 @@ class PantallaMas extends StatelessWidget {
                   onTap: onNavigateToClass,
                 ),
 
-
                 _item(
                   context: context,
                   text: "Mis pagos",
@@ -76,7 +74,6 @@ class PantallaMas extends StatelessWidget {
                     onNavigateToTab(1);
                   },
                 ),
-
 
                 _item(
                   context: context,
@@ -103,47 +100,19 @@ class PantallaMas extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                GestureDetector(
+                _item(
+                  context: context,
+                  text: "Cerrar Sesión",
+                  icon: Icons.logout,
+                  color: const Color(0xFFF44336),
                   onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Cerrando sesión...')),
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginGymTrack(),
+                      ),
+                      (Route<dynamic> route) => false,
                     );
                   },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                      horizontal: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.red.shade100,
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withOpacity(0.1),
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: const [
-                        Icon(Icons.logout, color: Colors.red),
-                        SizedBox(width: 10),
-                        Text(
-                          "Cerrar sesión",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.red,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 20),
               ],
@@ -211,7 +180,6 @@ class PantallaMas extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit, color: Color(0xFF1ABC9C)),
             onPressed: () {
-              // PERFIL: Navegación apilada (deja el menú principal abajo)
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const PantallaPerfil()),
@@ -228,6 +196,7 @@ class PantallaMas extends StatelessWidget {
     required String text,
     required IconData icon,
     required VoidCallback onTap,
+    Color color = const Color(0xFFF44336),
   }) {
     return GestureDetector(
       onTap: onTap,

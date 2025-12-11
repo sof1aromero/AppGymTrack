@@ -19,14 +19,14 @@ class PantallaPagos extends StatelessWidget {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Center(
                   child: Padding(
-                    padding: EdgeInsets.only(top: 15, bottom: 40),
+                    padding: EdgeInsets.only(top: 45, bottom: 40),
                     child: Text(
                       "Mis pagos",
                       style: TextStyle(
@@ -61,7 +61,8 @@ class PantallaPagos extends StatelessWidget {
                 _buildPaymentCard(
                   context: context,
                   title: "Ver historial de pagos",
-                  description: "Consulta tus pagos anteriores por fecha o servicio.",
+                  description:
+                      "Consulta tus pagos anteriores por fecha o servicio.",
                   buttonText: "Ver historial",
                   onTap: () {
                     Navigator.push(
@@ -88,6 +89,9 @@ class PantallaPagos extends StatelessWidget {
                     );
                   },
                 ),
+
+                // ESPACIO INFERIOR AUMENTADO
+                const SizedBox(height: 150),
               ],
             ),
           ),
@@ -106,6 +110,7 @@ class PantallaPagos extends StatelessWidget {
     const Color primaryColor = Color(0xFF34B5A0);
 
     return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.9),

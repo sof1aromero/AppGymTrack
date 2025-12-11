@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pantalla_agendarclase.dart';
-import 'pantalla_misclases.dart';
+
+import '../../models/clase_model.dart';
 
 class PantallaHistorial extends StatefulWidget {
   final VoidCallback onVolverAClases;
@@ -17,39 +17,39 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
 
   final List<ClaseReservada> historialCompleto = [
     ClaseReservada(
-      clase: ClaseDetalle(
+      clase: const ClaseDetalle(
         nombre: "Spinning",
         instructor: "Luis Ramirez",
         duracion: "45 minutos",
         hora: "1:00 p.m.",
         cuposDisponibles: 0,
-        colorPrincipal: const Color(0xFFE74C3C),
+        colorPrincipal: Color(0xFFE74C3C),
       ),
       fecha: "8 de junio de 2025",
       horaReservada: "1:00 p.m.",
       estado: "Cancelada",
     ),
     ClaseReservada(
-      clase: ClaseDetalle(
+      clase: const ClaseDetalle(
         nombre: "Yoga Suave",
         instructor: "Sara P.",
         duracion: "60 minutos",
         hora: "7:00 p.m.",
         cuposDisponibles: 0,
-        colorPrincipal: const Color(0xFF1ABC9C),
+        colorPrincipal: Color(0xFF1ABC9C),
       ),
       fecha: "5 de mayo de 2025",
       horaReservada: "7:00 p.m.",
       estado: "Finalizada",
     ),
     ClaseReservada(
-      clase: ClaseDetalle(
+      clase: const ClaseDetalle(
         nombre: "Entrenamiento Funcional",
         instructor: "David R.",
         duracion: "45 minutos",
         hora: "6:00 a.m.",
         cuposDisponibles: 0,
-        colorPrincipal: const Color(0xFF1ABC9C),
+        colorPrincipal: Color(0xFF1ABC9C),
       ),
       fecha: "3 de junio de 2025",
       horaReservada: "6:00 a.m.",
@@ -61,15 +61,24 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
     List<ClaseReservada> filteredByStatus;
 
     if (_filtroSeleccionado == 'Finalizadas') {
-      filteredByStatus = historialCompleto.where((c) => c.estado == 'Finalizada').toList();
+      filteredByStatus = historialCompleto
+          .where((c) => c.estado == 'Finalizada')
+          .toList();
     } else if (_filtroSeleccionado == 'Canceladas') {
-      filteredByStatus = historialCompleto.where((c) => c.estado == 'Cancelada').toList();
+      filteredByStatus = historialCompleto
+          .where((c) => c.estado == 'Cancelada')
+          .toList();
     } else {
       filteredByStatus = historialCompleto;
     }
 
     if (_mesSeleccionado != 'Todos') {
-      filteredByStatus = filteredByStatus.where((c) => c.fecha.contains(_mesSeleccionado.toLowerCase())).toList();
+      filteredByStatus = filteredByStatus
+          .where(
+            (c) =>
+                c.fecha.toLowerCase().contains(_mesSeleccionado.toLowerCase()),
+          )
+          .toList();
     }
 
     return filteredByStatus;
@@ -95,7 +104,7 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
         iconTheme: const IconThemeData(color: Color(0xFF2C3E50)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: widget.onVolverAClases,
         ),
       ),
       body: Container(
@@ -109,17 +118,26 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 10.0,
+              ),
               child: _buildFilterButtons(),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 5.0,
+              ),
               child: _buildMonthFilter(),
             ),
 
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
                 child: Column(
                   children: [
                     if (filteredClasses.isEmpty)
@@ -131,7 +149,9 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
                         ),
                       ),
 
-                    ...filteredClasses.map((clase) => _buildHistoryClassCard(context, clase)).toList(),
+                    ...filteredClasses
+                        .map((clase) => _buildHistoryClassCard(context, clase))
+                        .toList(),
                     const SizedBox(height: 30),
                   ],
                 ),
@@ -140,7 +160,6 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
@@ -150,14 +169,28 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
       children: [
         _buildFilterChip('Todas', 'Ver todas', _filtroSeleccionado == 'Todas'),
         const SizedBox(width: 8),
-        _buildFilterChip('Finalizadas', 'Finalizadas', _filtroSeleccionado == 'Finalizadas'),
+        _buildFilterChip(
+          'Finalizadas',
+          'Finalizadas',
+          _filtroSeleccionado == 'Finalizadas',
+        ),
         const SizedBox(width: 8),
-        _buildFilterChip('Canceladas', 'Canceladas', _filtroSeleccionado == 'Canceladas', selectedColor: Colors.red),
+        _buildFilterChip(
+          'Canceladas',
+          'Canceladas',
+          _filtroSeleccionado == 'Canceladas',
+          selectedColor: Colors.red,
+        ),
       ],
     );
   }
 
-  Widget _buildFilterChip(String filterValue, String label, bool isSelected, {Color? selectedColor}) {
+  Widget _buildFilterChip(
+    String filterValue,
+    String label,
+    bool isSelected, {
+    Color? selectedColor,
+  }) {
     return ActionChip(
       label: Text(label),
       onPressed: () {
@@ -165,13 +198,17 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
           _filtroSeleccionado = filterValue;
         });
       },
-      backgroundColor: isSelected ? (selectedColor ?? const Color(0xFF34B5A0).withOpacity(0.8)) : Colors.white.withOpacity(0.9),
+      backgroundColor: isSelected
+          ? (selectedColor ?? const Color(0xFF34B5A0).withOpacity(0.8))
+          : Colors.white.withOpacity(0.9),
       labelStyle: TextStyle(
         color: isSelected ? Colors.white : const Color(0xFF2C3E50),
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
       side: BorderSide(
-        color: isSelected ? (selectedColor ?? const Color(0xFF34B5A0)) : Colors.black26,
+        color: isSelected
+            ? (selectedColor ?? const Color(0xFF34B5A0))
+            : Colors.black26,
         width: isSelected ? 2 : 1,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -179,7 +216,21 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
   }
 
   Widget _buildMonthFilter() {
-    final List<String> meses = ['Todos', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    final List<String> meses = [
+      'Todos',
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ];
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -214,8 +265,13 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
     );
   }
 
-  Widget _buildHistoryClassCard(BuildContext context, ClaseReservada claseReservada) {
-    final Color statusColor = claseReservada.estado == 'Cancelada' ? Colors.redAccent : const Color(0xFF1ABC9C);
+  Widget _buildHistoryClassCard(
+    BuildContext context,
+    ClaseReservada claseReservada,
+  ) {
+    final Color statusColor = claseReservada.estado == 'Cancelada'
+        ? Colors.redAccent
+        : const Color(0xFF1ABC9C);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
@@ -256,15 +312,29 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
             alignment: Alignment.center,
             child: OutlinedButton(
               onPressed: () {
-                print("Ver detalles de ${claseReservada.clase.nombre} - Historial");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Mostrando detalles de ${claseReservada.clase.nombre}',
+                    ),
+                  ),
+                );
               },
               style: OutlinedButton.styleFrom(
                 foregroundColor: const Color(0xFF34B5A0),
                 side: const BorderSide(color: Color(0xFF34B5A0), width: 1.5),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              child: const Text("Ver detalles", style: TextStyle(fontWeight: FontWeight.bold)),
+              child: const Text(
+                "Ver detalles",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
@@ -301,65 +371,6 @@ class _PantallaHistorialState extends State<PantallaHistorial> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBottomNavBar() {
-    return Container(
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 5,
-            spreadRadius: 1,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _NavBarItem(icon: Icons.sync_alt, label: "Mis servicios"),
-          _NavBarItem(icon: Icons.credit_card, label: "Mis pagos"),
-          _NavBarItem(icon: Icons.notifications_none, label: "Notificaciones"),
-          _NavBarItem(icon: Icons.menu, label: "Más"),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavBarItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final bool isSelected;
-
-  const _NavBarItem({
-    required this.icon,
-    required this.label,
-    this.isSelected = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: isSelected ? const Color(0xFF34B5A0) : Colors.grey.shade600,
-          size: 26,
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            color: isSelected ? const Color(0xFF34B5A0) : Colors.grey.shade600,
-          ),
-        ),
-      ],
     );
   }
 }
