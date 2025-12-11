@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 import 'pantalla_perfil.dart';
 
-import '../optionsapp/pantalla_servicios.dart';
-import '../optionsapp/pantalla_pagos.dart';
-import '../optionsapp/pantalla_notificaciones.dart';
-
 class PantallaMas extends StatelessWidget {
-  const PantallaMas({super.key});
+  final ValueChanged<int> onNavigateToTab;
+  final VoidCallback onNavigateToClass;
+
+
+  const PantallaMas({
+    super.key,
+    required this.onNavigateToTab,
+    required this.onNavigateToClass,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,41 +49,41 @@ class PantallaMas extends StatelessWidget {
                 const SizedBox(height: 30),
 
                 _buildSectionTitle("General"),
+
+
                 _item(
                   context: context,
                   text: "Mis servicios",
                   icon: Icons.fitness_center_outlined,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PantallaServicios(),
-                      ),
-                    );
+                    onNavigateToTab(0);
                   },
                 ),
+
                 _item(
                   context: context,
                   text: "Clases",
                   icon: Icons.calendar_month_outlined,
-                  onTap: () {
-                    print("Navegar a Clases");
-                  },
+                  onTap: onNavigateToClass,
                 ),
+
+
                 _item(
                   context: context,
                   text: "Mis pagos",
                   icon: Icons.credit_card_outlined,
                   onTap: () {
-                    print("Navegar a Mis Pagos");
+                    onNavigateToTab(1);
                   },
                 ),
+
+
                 _item(
                   context: context,
                   text: "Notificaciones",
                   icon: Icons.notifications_none_outlined,
                   onTap: () {
-                    print("Navegar a Notificaciones");
+                    onNavigateToTab(2);
                   },
                 ),
 
@@ -207,6 +211,7 @@ class PantallaMas extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit, color: Color(0xFF1ABC9C)),
             onPressed: () {
+              // PERFIL: Navegación apilada (deja el menú principal abajo)
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const PantallaPerfil()),

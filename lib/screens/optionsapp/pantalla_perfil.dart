@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../optionsapp/pantalla_mas.dart';
 import '../perfilupdate/pantalla_actualizar_datos.dart';
-import '../perfilupdate/pantalla_cambiar_contraseña.dart'; 
+import '../perfilupdate/pantalla_cambiar_contraseña.dart';
+import '../optionsapp/MenuPrincipal.dart';
 
 class PantallaPerfil extends StatelessWidget {
   const PantallaPerfil({super.key});
@@ -28,7 +29,7 @@ class PantallaPerfil extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => const PantallaMas()),
+              MaterialPageRoute(builder: (_) => const MenuPrincipal()),
             );
           },
         ),
