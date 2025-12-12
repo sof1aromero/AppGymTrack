@@ -1,0 +1,9 @@
+{
+  "usuario": {
+    "id": 101,
+    "nombreCompleto": "Sofía Giménez",
+    "email": "sofia.gimenez@gymtrack.com",
+    "token": "JWT_token_de_simulacion_1234567890ABCDEF"
+  },
+  "message": "Inicio de sesión exitoso"
+}

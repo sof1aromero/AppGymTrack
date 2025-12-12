@@ -12,14 +12,32 @@ class RegistroPaso1 extends StatefulWidget {
 class _RegistroPaso1State extends State<RegistroPaso1> {
   String? tipoDocumento;
 
-  // Controladores de campos obligatorios
   final TextEditingController primerNombreCtrl = TextEditingController();
   final TextEditingController primerApellidoCtrl = TextEditingController();
   final TextEditingController numeroDocumentoCtrl = TextEditingController();
+  final TextEditingController segundoNombreCtrl = TextEditingController();
+  final TextEditingController segundoApellidoCtrl = TextEditingController();
+
+
+  @override
+  void dispose() {
+    primerNombreCtrl.dispose();
+    primerApellidoCtrl.dispose();
+    numeroDocumentoCtrl.dispose();
+    segundoNombreCtrl.dispose();
+    segundoApellidoCtrl.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.black,
+      ),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -73,11 +91,11 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
 
                       const SizedBox(height: 20),
 
-                      // CAMPOS OBLIGATORIOS CON CONTROLADORES
                       campoObligatorio("Primer nombre*", primerNombreCtrl),
-                      campo("Segundo nombre (opcional)", false),
+                      campo("Segundo nombre (opcional)", false, controller: segundoNombreCtrl),
                       campoObligatorio("Primer apellido*", primerApellidoCtrl),
-                      campo("Segundo apellido (opcional)", false),
+                      campo("Segundo apellido (opcional)", false, controller: segundoApellidoCtrl),
+
 
                       const SizedBox(height: 10),
                       const Text("Tipo de documento*",
@@ -124,7 +142,7 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
 
                       const SizedBox(height: 25),
 
-   
+
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF00C2A7),
@@ -165,13 +183,21 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
       return;
     }
 
-// si llena todo pasa a registro 2
+    final Map<String, dynamic> datosPaso1 = {
+      'nombre': '${primerNombreCtrl.text} ${segundoNombreCtrl.text}'.trim(),
+      'primerNombre': primerNombreCtrl.text,
+      'segundoNombre': segundoNombreCtrl.text,
+      'primerApellido': primerApellidoCtrl.text,
+      'segundoApellido': segundoApellidoCtrl.text,
+      'tipoDocumento': tipoDocumento,
+      'numeroDocumento': numeroDocumentoCtrl.text,
+    };
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => const RegistroPaso2()),
+      MaterialPageRoute(builder: (_) => RegistroPaso2(datosPaso1: datosPaso1)),
     );
   }
-
 
 
   Widget campoObligatorio(String label, TextEditingController controller,
@@ -199,13 +225,14 @@ class _RegistroPaso1State extends State<RegistroPaso1> {
     );
   }
 
-  Widget campo(String label, bool numeric) {
+  Widget campo(String label, bool numeric, {TextEditingController? controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
         const SizedBox(height: 5),
         TextField(
+          controller: controller,
           keyboardType: numeric ? TextInputType.number : TextInputType.text,
           decoration: InputDecoration(
             filled: true,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymtrack/screens/optionsapp/MenuPrincipal.dart';
+import 'package:gymtrack/services/api_service.dart';
 
 import 'recuperar_contrasena_paso1.dart';
 import 'registro_paso1.dart';
@@ -12,12 +13,78 @@ class LoginGymTrack extends StatefulWidget {
 }
 
 class _LoginGymTrackState extends State<LoginGymTrack> {
+  final TextEditingController _documentoController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final ApiService _apiService = ApiService();
+
   String? selectedDocumentType;
   bool rememberMe = false;
+  bool _isLoading = false;
 
   final Color _primaryColor = const Color.fromARGB(255, 92, 189, 164);
   final Color _secondaryColor = const Color(0xFFFFFFFF);
   final Color _darkOverlay = Colors.black.withOpacity(0.6);
+
+  @override
+  void dispose() {
+    _documentoController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleLogin() async {
+    final email = _documentoController.text;
+    final password = _passwordController.text;
+
+    if (email.isEmpty || password.isEmpty || selectedDocumentType == null) {
+      _showErrorDialog("Error", "Por favor, completa todos los campos.");
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final usuario = await _apiService.iniciarSesion(email, password);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("¡Bienvenido, ${usuario.nombreCompleto}!"),
+          backgroundColor: _primaryColor,
+        ),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MenuPrincipal(),
+        ),
+      );
+    } catch (e) {
+      _showErrorDialog("Error de inicio de sesión", e.toString().replaceFirst('Exception: ', ''));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +108,11 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
                   children: [
                     const SizedBox(height: 70),
 
-                    // Logo y Título
                     const Icon(
                       Icons.fitness_center,
                       size: 90,
                       color: Color.fromARGB(255, 99, 189, 166),
-                    ), // MEJORA: Icono con color primario
+                    ),
                     const SizedBox(height: 10),
                     Text(
                       "GYM\nTRACK",
@@ -73,12 +139,13 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
 
                     const SizedBox(height: 15),
 
-                    _inputField("N° Documento", icon: Icons.person_outline),
+                    _inputField("N° Documento", controller: _documentoController, icon: Icons.person_outline),
 
                     const SizedBox(height: 15),
 
                     _inputField(
                       "Contraseña",
+                      controller: _passwordController,
                       isPassword: true,
                       icon: Icons.lock_outline,
                     ),
@@ -120,7 +187,7 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const RecuperarContrasenaPaso1(),
+                                const RecuperarContrasenaPaso1(),
                               ),
                             );
                           },
@@ -141,16 +208,10 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
                     const SizedBox(height: 20),
 
                     _button(
-                      "Inicia Sesión",
+                      _isLoading ? "Iniciando Sesión..." : "Inicia Sesión",
                       color: _primaryColor,
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const MenuPrincipal(),
-                          ),
-                        );
-                      },
+                      onPressed: _isLoading ? null : _handleLogin,
+                      isLoading: _isLoading,
                     ),
 
                     const SizedBox(height: 15),
@@ -201,19 +262,18 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
           labelStyle: TextStyle(color: Colors.grey.shade700),
           prefixIcon: const Icon(Icons.badge, color: Color(0xFF519483)),
         ),
-        items:
-            [
-                  "Cédula de Ciudadanía",
-                  "Tarjeta de Identidad",
-                  "Permiso por Protección Temporal",
-                ]
-                .map(
-                  (e) => DropdownMenuItem(
-                    value: e,
-                    child: Text(e, style: const TextStyle(color: Colors.black)),
-                  ),
-                )
-                .toList(),
+        items: [
+          "Cédula de Ciudadanía",
+          "Tarjeta de Identidad",
+          "Permiso por Protección Temporal",
+        ]
+            .map(
+              (e) => DropdownMenuItem(
+            value: e,
+            child: Text(e, style: const TextStyle(color: Colors.black)),
+          ),
+        )
+            .toList(),
         onChanged: (value) {
           setState(() {
             selectedDocumentType = value;
@@ -223,7 +283,12 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
     );
   }
 
-  Widget _inputField(String label, {bool isPassword = false, IconData? icon}) {
+  Widget _inputField(
+      String label, {
+        bool isPassword = false,
+        IconData? icon,
+        TextEditingController? controller,
+      }) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
@@ -239,6 +304,7 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
         ],
       ),
       child: TextField(
+        controller: controller,
         obscureText: isPassword,
         style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
@@ -257,11 +323,12 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
   }
 
   Widget _button(
-    String text, {
-    Color color = const Color(0xFF519483),
-    Color textColor = Colors.black,
-    VoidCallback? onPressed,
-  }) {
+      String text, {
+        Color color = const Color(0xFF519483),
+        Color textColor = Colors.black,
+        VoidCallback? onPressed,
+        bool isLoading = false,
+      }) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -275,8 +342,17 @@ class _LoginGymTrackState extends State<LoginGymTrack> {
           elevation: 8,
           shadowColor: color.withOpacity(0.6),
         ),
-        onPressed: onPressed ?? () {},
-        child: Text(
+        onPressed: onPressed,
+        child: isLoading
+            ? const SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(
+            color: Colors.white,
+            strokeWidth: 3,
+          ),
+        )
+            : Text(
           text,
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),

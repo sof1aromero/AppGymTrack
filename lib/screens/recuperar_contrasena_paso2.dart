@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gymtrack/services/api_service.dart';
+import '../screens/login_gymtrack.dart';
 
 class RecuperarContrasenaPaso2 extends StatefulWidget {
-  const RecuperarContrasenaPaso2({super.key});
+  final String email;
+  const RecuperarContrasenaPaso2({super.key, required this.email});
 
   @override
   State<RecuperarContrasenaPaso2> createState() => _RecuperarContrasenaPaso2State();
@@ -10,10 +13,102 @@ class RecuperarContrasenaPaso2 extends StatefulWidget {
 class _RecuperarContrasenaPaso2State extends State<RecuperarContrasenaPaso2> {
   final TextEditingController passCtrl = TextEditingController();
   final TextEditingController confirmCtrl = TextEditingController();
+  final ApiService _apiService = ApiService();
+
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    passCtrl.dispose();
+    confirmCtrl.dispose();
+    super.dispose();
+  }
+
+  void _handleResetPassword(BuildContext context) async {
+    final newPassword = passCtrl.text;
+    const mockCode = "123456";
+
+    if (newPassword.length < 8) {
+      _showSnackBar(context, "La contraseña debe tener mínimo 8 caracteres");
+      return;
+    }
+
+    if (newPassword != confirmCtrl.text) {
+      _showSnackBar(context, "Las contraseñas no coinciden");
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      await _apiService.restablecerContrasena(
+        widget.email,
+        mockCode,
+        newPassword,
+      );
+
+      _showAlertDialog(
+        "Éxito",
+        "Contraseña restablecida exitosamente. Ahora puede iniciar sesión.",
+        isSuccess: true,
+      );
+
+    } catch (e) {
+      _showAlertDialog(
+        "Error al restablecer",
+        e.toString().replaceFirst('Exception: ', ''),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: const Color(0xFF00C2A7),
+      ),
+    );
+  }
+
+  void _showAlertDialog(String title, String message, {bool isSuccess = false}) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              if (isSuccess) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginGymTrack()),
+                      (Route<dynamic> route) => false,
+                );
+              }
+            },
+            child: Text(isSuccess ? 'Ir al Login' : 'Cerrar'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    const Color primaryColor = Color(0xFF00C2A7);
+    const Color secondaryColor = Colors.black;
+
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: secondaryColor,
+      ),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -27,11 +122,12 @@ class _RecuperarContrasenaPaso2State extends State<RecuperarContrasenaPaso2> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const Text(
-                "Recuperar Contraseña",
+              Text(
+                "Restablecer Contraseña",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
+                  color: secondaryColor,
                 ),
               ),
 
@@ -67,30 +163,24 @@ class _RecuperarContrasenaPaso2State extends State<RecuperarContrasenaPaso2> {
                       const SizedBox(height: 25),
 
                       ElevatedButton(
-                        onPressed: () {
-                          if (passCtrl.text.length < 8) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("La contraseña debe tener mínimo 8 caracteres")),
-                            );
-                            return;
-                          }
-
-                          if (passCtrl.text != confirmCtrl.text) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Las contraseñas no coinciden")),
-                            );
-                            return;
-                          }
-
-                          // Aquí iría tu lógica final
-                        },
+                        onPressed: _isLoading ? null : () => _handleResetPassword(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF00C2A7),
+                          backgroundColor: primaryColor,
                           minimumSize: const Size(double.infinity, 45),
                         ),
-                        child: const Text("Enviar"),
+                        child: _isLoading
+                            ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                            : const Text(
+                          "Restablecer y Finalizar",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       )
                     ],
                   ),
